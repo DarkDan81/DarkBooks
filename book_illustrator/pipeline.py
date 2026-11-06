@@ -736,15 +736,12 @@ class Pipeline:
             cards.append(f'<article><h2>{escaped(scene["id"])} — {escaped(scene["title"])}</h2>'
                          f'{image_html}<p>{escaped(scene["description"])}</p>'
                          f'<blockquote>{escaped(scene["quote"])}</blockquote>'
-                         f'<p>После {escaped(scene["after_paragraph_id"])}; '
-                         f'проверено: {escaped(bool(image and scene["approved"] and scene.get("approved_image_sha256") == image["image_sha256"]))}</p>'
-                         f'<details><summary>Промпт</summary><pre>{escaped(compile_prompt(scene))}</pre></details></article>')
-        page = ('<!doctype html><meta charset="utf-8"><title>Book Illustrator — review</title>'
+                         f'<details><summary>Prompt</summary><pre>{escaped(compile_prompt(scene))}</pre></details></article>')
+        page = ('<!doctype html><html lang="en"><meta charset="utf-8"><title>DarkBooks — scene review</title>'
                 '<style>body{font:17px system-ui;max-width:1100px;margin:30px auto;background:#eee;color:#222}'
                 'article{background:white;padding:24px;margin:24px 0}img{max-width:100%;max-height:700px}'
                 'pre{white-space:pre-wrap}blockquote{border-left:3px solid #777;padding-left:18px}</style>'
-                '<h1>Пилот: сцены и иллюстрации</h1><p>Исходный текст не редактируется. '
-                'Перед экспортом проверьте сцены; команды approve/reject доступны в CLI.</p>' + ''.join(cards))
+                '<h1>Your illustrated scenes</h1>' + ''.join(cards) + '</html>')
         target = self.run / 'review.html'
         target.write_text(page, encoding='utf-8')
         return str(target)
