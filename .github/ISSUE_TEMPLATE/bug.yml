@@ -1,0 +1,28 @@
+name: Bug report
+description: Tell us what went wrong. Please do not include keys or private books.
+body:
+  - type: input
+    id: version
+    attributes:
+      label: DarkBooks version and operating system
+      placeholder: v0.3.0 / Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: models
+    attributes:
+      label: Models and connections
+      description: Text model, image model, local/cloud, server versions if known. No API keys.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Steps, expected result, and actual result.
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Relevant activity log
+      description: Remove credentials, private text and personal paths before posting.
+      render: text

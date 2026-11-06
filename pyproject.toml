@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "darkbooks"
+version = "0.3.0"
+license = "MIT"
+readme = "README.md"
+description = "Turn your books into illustrated editions with local or connected AI models"
+requires-python = ">=3.11"
+dependencies = ["Pillow>=10", "lxml>=5"]
+
+[project.optional-dependencies]
+finishing = ["Pillow>=10", "lxml>=5"]
+
+[project.scripts]
+darkbooks = "book_illustrator.webapp:main"
+
+[tool.setuptools.packages.find]
+include = ["book_illustrator*"]
+
+[tool.setuptools.package-data]
+book_illustrator = ["web/*.html", "web/*.css", "web/*.js", "web/*.json", "web/*.svg", "resources/schemas/*", "resources/workflows/*.json", "resources/examples/*.fb2"]
+
+[project.urls]
+Homepage = "https://github.com/DarkDan81/DarkBooks"
+Documentation = "https://github.com/DarkDan81/DarkBooks/blob/main/docs/GETTING_STARTED.md"
+Issues = "https://github.com/DarkDan81/DarkBooks/issues"

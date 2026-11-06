@@ -1,0 +1,35 @@
+name: Windows release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+      - run: python -m pip install -e .
+      - run: python -m unittest discover -s tests
+      - run: python scripts/build_portable.py
+      - name: Test bundled workers
+        shell: pwsh
+        run: |
+          $build = Get-Content dist/portable-build.json -Raw | ConvertFrom-Json
+          $env:BOOK_TEST_PORTABLE_ROOT = $build.staging
+          python -m unittest discover -s tests -p test_webapp.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Checksums
+        shell: pwsh
+        run: |
+          $sha = (Get-FileHash dist/DarkBooks-Windows-x64.zip -Algorithm SHA256).Hash.ToLower()
+          "$sha  DarkBooks-Windows-x64.zip" | Set-Content dist/SHA256SUMS.txt -Encoding utf8
+      - name: Publish
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create $env:GITHUB_REF_NAME dist/DarkBooks-Windows-x64.zip dist/SHA256SUMS.txt --title "DarkBooks $env:GITHUB_REF_NAME" --notes-file docs/RELEASE_NOTES.md --verify-tag

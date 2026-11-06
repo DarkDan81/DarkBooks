@@ -1,0 +1,10 @@
+name: Idea or feedback
+description: Suggest a useful improvement, model adapter, or workflow.
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      description: Describe your use case and the change you would like.
+    validations:
+      required: true
